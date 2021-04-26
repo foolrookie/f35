@@ -1,0 +1,343 @@
+ARM GAS  /tmp/ccUgQgG6.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"tim_scheduing.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.tim3_init,"ax",%progbits
+  18              		.align	1
+  19              		.global	tim3_init
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	tim3_init:
+  26              	.LFB130:
+  27              		.file 1 "Core/tim_scheduing/tim_scheduing.c"
+   1:Core/tim_scheduing/tim_scheduing.c **** 
+   2:Core/tim_scheduing/tim_scheduing.c **** /*基于TIM6定时器的系统调度器*/
+   3:Core/tim_scheduing/tim_scheduing.c **** 
+   4:Core/tim_scheduing/tim_scheduing.c **** #include "tim_scheduing.h"
+   5:Core/tim_scheduing/tim_scheduing.c **** #include "gpio_led_init.h"
+   6:Core/tim_scheduing/tim_scheduing.c **** 
+   7:Core/tim_scheduing/tim_scheduing.c **** TIM_HandleTypeDef Tim3initStruct;
+   8:Core/tim_scheduing/tim_scheduing.c **** 
+   9:Core/tim_scheduing/tim_scheduing.c **** 
+  10:Core/tim_scheduing/tim_scheduing.c **** static uint32_t system_time = 0;
+  11:Core/tim_scheduing/tim_scheduing.c **** 
+  12:Core/tim_scheduing/tim_scheduing.c **** /*init tim6*/
+  13:Core/tim_scheduing/tim_scheduing.c **** void tim3_init(void)
+  14:Core/tim_scheduing/tim_scheduing.c **** {   
+  28              		.loc 1 14 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 10B5     		push	{r4, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 4, -8
+  36              		.cfi_offset 14, -4
+  15:Core/tim_scheduing/tim_scheduing.c ****     uint32_t sysclock = HAL_RCC_GetPCLK1Freq();
+  37              		.loc 1 15 0
+  38 0002 FFF7FEFF 		bl	HAL_RCC_GetPCLK1Freq
+  39              	.LVL0:
+  16:Core/tim_scheduing/tim_scheduing.c **** 
+  17:Core/tim_scheduing/tim_scheduing.c ****     Tim3initStruct.Instance = TIM3;
+  40              		.loc 1 17 0
+  41 0006 0B4C     		ldr	r4, .L3
+ARM GAS  /tmp/ccUgQgG6.s 			page 2
+
+
+  42 0008 0B4B     		ldr	r3, .L3+4
+  43 000a 2360     		str	r3, [r4]
+  18:Core/tim_scheduing/tim_scheduing.c ****     Tim3initStruct.Init.Period = (1000 - 1);
+  44              		.loc 1 18 0
+  45 000c 40F2E733 		movw	r3, #999
+  46 0010 E360     		str	r3, [r4, #12]
+  19:Core/tim_scheduing/tim_scheduing.c ****     Tim3initStruct.Init.Prescaler = (((sysclock / 1000000) * 2) - 1);
+  47              		.loc 1 19 0
+  48 0012 0A4B     		ldr	r3, .L3+8
+  49 0014 A3FB0023 		umull	r2, r3, r3, r0
+  50 0018 9B0C     		lsrs	r3, r3, #18
+  51 001a 5B00     		lsls	r3, r3, #1
+  52 001c 013B     		subs	r3, r3, #1
+  53 001e 6360     		str	r3, [r4, #4]
+  20:Core/tim_scheduing/tim_scheduing.c ****     Tim3initStruct.Init.CounterMode = TIM_COUNTERMODE_UP;
+  54              		.loc 1 20 0
+  55 0020 0023     		movs	r3, #0
+  56 0022 A360     		str	r3, [r4, #8]
+  21:Core/tim_scheduing/tim_scheduing.c ****     Tim3initStruct.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  57              		.loc 1 21 0
+  58 0024 2361     		str	r3, [r4, #16]
+  22:Core/tim_scheduing/tim_scheduing.c ****     HAL_TIM_Base_Init(&Tim3initStruct);
+  59              		.loc 1 22 0
+  60 0026 2046     		mov	r0, r4
+  61              	.LVL1:
+  62 0028 FFF7FEFF 		bl	HAL_TIM_Base_Init
+  63              	.LVL2:
+  23:Core/tim_scheduing/tim_scheduing.c **** 
+  24:Core/tim_scheduing/tim_scheduing.c ****     HAL_TIM_Base_Start_IT(&Tim3initStruct);
+  64              		.loc 1 24 0
+  65 002c 2046     		mov	r0, r4
+  66 002e FFF7FEFF 		bl	HAL_TIM_Base_Start_IT
+  67              	.LVL3:
+  68 0032 10BD     		pop	{r4, pc}
+  69              	.L4:
+  70              		.align	2
+  71              	.L3:
+  72 0034 00000000 		.word	Tim3initStruct
+  73 0038 00040040 		.word	1073742848
+  74 003c 83DE1B43 		.word	1125899907
+  75              		.cfi_endproc
+  76              	.LFE130:
+  78              		.section	.text.HAL_TIM_Base_MspInit,"ax",%progbits
+  79              		.align	1
+  80              		.global	HAL_TIM_Base_MspInit
+  81              		.syntax unified
+  82              		.thumb
+  83              		.thumb_func
+  84              		.fpu fpv4-sp-d16
+  86              	HAL_TIM_Base_MspInit:
+  87              	.LFB131:
+  25:Core/tim_scheduing/tim_scheduing.c **** }
+  26:Core/tim_scheduing/tim_scheduing.c **** 
+  27:Core/tim_scheduing/tim_scheduing.c **** void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim)
+  28:Core/tim_scheduing/tim_scheduing.c **** {
+  88              		.loc 1 28 0
+  89              		.cfi_startproc
+ARM GAS  /tmp/ccUgQgG6.s 			page 3
+
+
+  90              		@ args = 0, pretend = 0, frame = 8
+  91              		@ frame_needed = 0, uses_anonymous_args = 0
+  92              	.LVL4:
+  93 0000 00B5     		push	{lr}
+  94              	.LCFI1:
+  95              		.cfi_def_cfa_offset 4
+  96              		.cfi_offset 14, -4
+  97 0002 83B0     		sub	sp, sp, #12
+  98              	.LCFI2:
+  99              		.cfi_def_cfa_offset 16
+ 100              	.LBB2:
+  29:Core/tim_scheduing/tim_scheduing.c ****     __HAL_RCC_TIM3_CLK_ENABLE();
+ 101              		.loc 1 29 0
+ 102 0004 0023     		movs	r3, #0
+ 103 0006 0193     		str	r3, [sp, #4]
+ 104 0008 0A4B     		ldr	r3, .L7
+ 105 000a 1A6C     		ldr	r2, [r3, #64]
+ 106 000c 42F00202 		orr	r2, r2, #2
+ 107 0010 1A64     		str	r2, [r3, #64]
+ 108 0012 1B6C     		ldr	r3, [r3, #64]
+ 109 0014 03F00203 		and	r3, r3, #2
+ 110 0018 0193     		str	r3, [sp, #4]
+ 111 001a 019B     		ldr	r3, [sp, #4]
+ 112              	.LBE2:
+  30:Core/tim_scheduing/tim_scheduing.c **** 
+  31:Core/tim_scheduing/tim_scheduing.c ****     HAL_NVIC_SetPriority(TIM3_IRQn,2,2);
+ 113              		.loc 1 31 0
+ 114 001c 0222     		movs	r2, #2
+ 115 001e 1146     		mov	r1, r2
+ 116 0020 1D20     		movs	r0, #29
+ 117              	.LVL5:
+ 118 0022 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 119              	.LVL6:
+  32:Core/tim_scheduing/tim_scheduing.c ****     HAL_NVIC_EnableIRQ(TIM3_IRQn);
+ 120              		.loc 1 32 0
+ 121 0026 1D20     		movs	r0, #29
+ 122 0028 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 123              	.LVL7:
+  33:Core/tim_scheduing/tim_scheduing.c **** }
+ 124              		.loc 1 33 0
+ 125 002c 03B0     		add	sp, sp, #12
+ 126              	.LCFI3:
+ 127              		.cfi_def_cfa_offset 4
+ 128              		@ sp needed
+ 129 002e 5DF804FB 		ldr	pc, [sp], #4
+ 130              	.L8:
+ 131 0032 00BF     		.align	2
+ 132              	.L7:
+ 133 0034 00380240 		.word	1073887232
+ 134              		.cfi_endproc
+ 135              	.LFE131:
+ 137              		.section	.text.TIM3_IRQHandler,"ax",%progbits
+ 138              		.align	1
+ 139              		.global	TIM3_IRQHandler
+ 140              		.syntax unified
+ 141              		.thumb
+ 142              		.thumb_func
+ARM GAS  /tmp/ccUgQgG6.s 			page 4
+
+
+ 143              		.fpu fpv4-sp-d16
+ 145              	TIM3_IRQHandler:
+ 146              	.LFB132:
+  34:Core/tim_scheduing/tim_scheduing.c **** 
+  35:Core/tim_scheduing/tim_scheduing.c **** void TIM3_IRQHandler(void)
+  36:Core/tim_scheduing/tim_scheduing.c **** {
+ 147              		.loc 1 36 0
+ 148              		.cfi_startproc
+ 149              		@ args = 0, pretend = 0, frame = 0
+ 150              		@ frame_needed = 0, uses_anonymous_args = 0
+ 151 0000 08B5     		push	{r3, lr}
+ 152              	.LCFI4:
+ 153              		.cfi_def_cfa_offset 8
+ 154              		.cfi_offset 3, -8
+ 155              		.cfi_offset 14, -4
+  37:Core/tim_scheduing/tim_scheduing.c ****     HAL_TIM_IRQHandler(&Tim3initStruct);
+ 156              		.loc 1 37 0
+ 157 0002 0248     		ldr	r0, .L11
+ 158 0004 FFF7FEFF 		bl	HAL_TIM_IRQHandler
+ 159              	.LVL8:
+ 160 0008 08BD     		pop	{r3, pc}
+ 161              	.L12:
+ 162 000a 00BF     		.align	2
+ 163              	.L11:
+ 164 000c 00000000 		.word	Tim3initStruct
+ 165              		.cfi_endproc
+ 166              	.LFE132:
+ 168              		.section	.text.HAL_TIM_PeriodElapsedCallback,"ax",%progbits
+ 169              		.align	1
+ 170              		.global	HAL_TIM_PeriodElapsedCallback
+ 171              		.syntax unified
+ 172              		.thumb
+ 173              		.thumb_func
+ 174              		.fpu fpv4-sp-d16
+ 176              	HAL_TIM_PeriodElapsedCallback:
+ 177              	.LFB133:
+  38:Core/tim_scheduing/tim_scheduing.c **** }
+  39:Core/tim_scheduing/tim_scheduing.c **** 
+  40:Core/tim_scheduing/tim_scheduing.c **** 
+  41:Core/tim_scheduing/tim_scheduing.c **** void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+  42:Core/tim_scheduing/tim_scheduing.c **** {
+ 178              		.loc 1 42 0
+ 179              		.cfi_startproc
+ 180              		@ args = 0, pretend = 0, frame = 0
+ 181              		@ frame_needed = 0, uses_anonymous_args = 0
+ 182              		@ link register save eliminated.
+ 183              	.LVL9:
+  43:Core/tim_scheduing/tim_scheduing.c ****     if(htim == (&Tim3initStruct))
+ 184              		.loc 1 43 0
+ 185 0000 044B     		ldr	r3, .L16
+ 186 0002 8342     		cmp	r3, r0
+ 187 0004 00D0     		beq	.L15
+ 188              	.L13:
+ 189 0006 7047     		bx	lr
+ 190              	.L15:
+  44:Core/tim_scheduing/tim_scheduing.c ****     {
+  45:Core/tim_scheduing/tim_scheduing.c ****         system_time++;
+ARM GAS  /tmp/ccUgQgG6.s 			page 5
+
+
+ 191              		.loc 1 45 0
+ 192 0008 034A     		ldr	r2, .L16+4
+ 193 000a 1368     		ldr	r3, [r2]
+ 194 000c 0133     		adds	r3, r3, #1
+ 195 000e 1360     		str	r3, [r2]
+  46:Core/tim_scheduing/tim_scheduing.c ****     }
+  47:Core/tim_scheduing/tim_scheduing.c **** }
+ 196              		.loc 1 47 0
+ 197 0010 F9E7     		b	.L13
+ 198              	.L17:
+ 199 0012 00BF     		.align	2
+ 200              	.L16:
+ 201 0014 00000000 		.word	Tim3initStruct
+ 202 0018 00000000 		.word	.LANCHOR0
+ 203              		.cfi_endproc
+ 204              	.LFE133:
+ 206              		.section	.text.get_system_time,"ax",%progbits
+ 207              		.align	1
+ 208              		.global	get_system_time
+ 209              		.syntax unified
+ 210              		.thumb
+ 211              		.thumb_func
+ 212              		.fpu fpv4-sp-d16
+ 214              	get_system_time:
+ 215              	.LFB134:
+  48:Core/tim_scheduing/tim_scheduing.c **** 
+  49:Core/tim_scheduing/tim_scheduing.c **** /*返回TIM3生成的系统时钟戳*/
+  50:Core/tim_scheduing/tim_scheduing.c **** uint32_t get_system_time(void)
+  51:Core/tim_scheduing/tim_scheduing.c **** {
+ 216              		.loc 1 51 0
+ 217              		.cfi_startproc
+ 218              		@ args = 0, pretend = 0, frame = 0
+ 219              		@ frame_needed = 0, uses_anonymous_args = 0
+ 220              		@ link register save eliminated.
+  52:Core/tim_scheduing/tim_scheduing.c ****     return system_time;
+  53:Core/tim_scheduing/tim_scheduing.c **** }...
+ 221              		.loc 1 53 0
+ 222 0000 014B     		ldr	r3, .L19
+ 223 0002 1868     		ldr	r0, [r3]
+ 224 0004 7047     		bx	lr
+ 225              	.L20:
+ 226 0006 00BF     		.align	2
+ 227              	.L19:
+ 228 0008 00000000 		.word	.LANCHOR0
+ 229              		.cfi_endproc
+ 230              	.LFE134:
+ 232              		.comm	Tim3initStruct,64,4
+ 233              		.section	.bss.system_time,"aw",%nobits
+ 234              		.align	2
+ 235              		.set	.LANCHOR0,. + 0
+ 238              	system_time:
+ 239 0000 00000000 		.space	4
+ 240              		.text
+ 241              	.Letext0:
+ 242              		.file 2 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/machine/_default_ty
+ 243              		.file 3 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/sys/_stdint.h"
+ 244              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ARM GAS  /tmp/ccUgQgG6.s 			page 6
+
+
+ 245              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 246              		.file 6 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h"
+ 247              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 248              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 249              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 250              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 251              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h"
+ 252              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h"
+ARM GAS  /tmp/ccUgQgG6.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 tim_scheduing.c
+     /tmp/ccUgQgG6.s:18     .text.tim3_init:0000000000000000 $t
+     /tmp/ccUgQgG6.s:25     .text.tim3_init:0000000000000000 tim3_init
+     /tmp/ccUgQgG6.s:72     .text.tim3_init:0000000000000034 $d
+                            *COM*:0000000000000040 Tim3initStruct
+     /tmp/ccUgQgG6.s:79     .text.HAL_TIM_Base_MspInit:0000000000000000 $t
+     /tmp/ccUgQgG6.s:86     .text.HAL_TIM_Base_MspInit:0000000000000000 HAL_TIM_Base_MspInit
+     /tmp/ccUgQgG6.s:133    .text.HAL_TIM_Base_MspInit:0000000000000034 $d
+     /tmp/ccUgQgG6.s:138    .text.TIM3_IRQHandler:0000000000000000 $t
+     /tmp/ccUgQgG6.s:145    .text.TIM3_IRQHandler:0000000000000000 TIM3_IRQHandler
+     /tmp/ccUgQgG6.s:164    .text.TIM3_IRQHandler:000000000000000c $d
+     /tmp/ccUgQgG6.s:169    .text.HAL_TIM_PeriodElapsedCallback:0000000000000000 $t
+     /tmp/ccUgQgG6.s:176    .text.HAL_TIM_PeriodElapsedCallback:0000000000000000 HAL_TIM_PeriodElapsedCallback
+     /tmp/ccUgQgG6.s:201    .text.HAL_TIM_PeriodElapsedCallback:0000000000000014 $d
+     /tmp/ccUgQgG6.s:207    .text.get_system_time:0000000000000000 $t
+     /tmp/ccUgQgG6.s:214    .text.get_system_time:0000000000000000 get_system_time
+     /tmp/ccUgQgG6.s:228    .text.get_system_time:0000000000000008 $d
+     /tmp/ccUgQgG6.s:234    .bss.system_time:0000000000000000 $d
+     /tmp/ccUgQgG6.s:238    .bss.system_time:0000000000000000 system_time
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+HAL_RCC_GetPCLK1Freq
+HAL_TIM_Base_Init
+HAL_TIM_Base_Start_IT
+HAL_NVIC_SetPriority
+HAL_NVIC_EnableIRQ
+HAL_TIM_IRQHandler

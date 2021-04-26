@@ -1,0 +1,342 @@
+ARM GAS  /tmp/cczldUCb.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"cbuf.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.Cbuf_Init,"ax",%progbits
+  18              		.align	1
+  19              		.global	Cbuf_Init
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	Cbuf_Init:
+  26              	.LFB130:
+  27              		.file 1 "Core/gui/cbuf.c"
+   1:Core/gui/cbuf.c **** #include "cbuf.h"
+   2:Core/gui/cbuf.c **** 
+   3:Core/gui/cbuf.c **** 
+   4:Core/gui/cbuf.c **** /*缓冲区初始化*/
+   5:Core/gui/cbuf.c **** void Cbuf_Init(cbuf_t *cbuff)
+   6:Core/gui/cbuf.c **** {
+  28              		.loc 1 6 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+   7:Core/gui/cbuf.c ****     cbuff->_get_index = 0;
+  34              		.loc 1 7 0
+  35 0000 0023     		movs	r3, #0
+  36 0002 4360     		str	r3, [r0, #4]
+   8:Core/gui/cbuf.c ****     cbuff->_put_index = 0;
+  37              		.loc 1 8 0
+  38 0004 0360     		str	r3, [r0]
+   9:Core/gui/cbuf.c **** 
+  10:Core/gui/cbuf.c ****     cbuff->buf_actual_size = CBUF_MAX_SIZE; //初始化时缓冲区设置为最大    
+  39              		.loc 1 10 0
+  40 0006 4FF48052 		mov	r2, #4096
+  41 000a 41F20803 		movw	r3, #4104
+  42 000e C250     		str	r2, [r0, r3]
+  43 0010 7047     		bx	lr
+  44              		.cfi_endproc
+  45              	.LFE130:
+  47              		.section	.text.Set_Cbuf_Size,"ax",%progbits
+  48              		.align	1
+  49              		.global	Set_Cbuf_Size
+ARM GAS  /tmp/cczldUCb.s 			page 2
+
+
+  50              		.syntax unified
+  51              		.thumb
+  52              		.thumb_func
+  53              		.fpu fpv4-sp-d16
+  55              	Set_Cbuf_Size:
+  56              	.LFB131:
+  11:Core/gui/cbuf.c **** }
+  12:Core/gui/cbuf.c **** 
+  13:Core/gui/cbuf.c **** /*设置缓冲区大小*/
+  14:Core/gui/cbuf.c **** void Set_Cbuf_Size(cbuf_t *cbuff , uint32_t set_size)
+  15:Core/gui/cbuf.c **** {
+  57              		.loc 1 15 0
+  58              		.cfi_startproc
+  59              		@ args = 0, pretend = 0, frame = 0
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61              		@ link register save eliminated.
+  62              	.LVL1:
+  16:Core/gui/cbuf.c ****     if(set_size <= CBUF_MAX_SIZE)
+  63              		.loc 1 16 0
+  64 0000 B1F5805F 		cmp	r1, #4096
+  65 0004 05D9     		bls	.L5
+  17:Core/gui/cbuf.c ****     {
+  18:Core/gui/cbuf.c ****         cbuff->buf_actual_size = set_size;
+  19:Core/gui/cbuf.c ****     }
+  20:Core/gui/cbuf.c ****     else
+  21:Core/gui/cbuf.c ****     {
+  22:Core/gui/cbuf.c ****         cbuff->buf_actual_size = CBUF_MAX_SIZE;
+  66              		.loc 1 22 0
+  67 0006 4FF48052 		mov	r2, #4096
+  68 000a 41F20803 		movw	r3, #4104
+  69 000e C250     		str	r2, [r0, r3]
+  70 0010 7047     		bx	lr
+  71              	.L5:
+  18:Core/gui/cbuf.c ****     }
+  72              		.loc 1 18 0
+  73 0012 41F20803 		movw	r3, #4104
+  74 0016 C150     		str	r1, [r0, r3]
+  75 0018 7047     		bx	lr
+  76              		.cfi_endproc
+  77              	.LFE131:
+  79              		.section	.text.Cbuf_Len,"ax",%progbits
+  80              		.align	1
+  81              		.global	Cbuf_Len
+  82              		.syntax unified
+  83              		.thumb
+  84              		.thumb_func
+  85              		.fpu fpv4-sp-d16
+  87              	Cbuf_Len:
+  88              	.LFB132:
+  23:Core/gui/cbuf.c ****     }        
+  24:Core/gui/cbuf.c **** }
+  25:Core/gui/cbuf.c **** 
+  26:Core/gui/cbuf.c **** /*获取缓冲区长度*/
+  27:Core/gui/cbuf.c **** uint32_t Cbuf_Len(cbuf_t *cbuff)
+  28:Core/gui/cbuf.c **** {
+  89              		.loc 1 28 0
+  90              		.cfi_startproc
+ARM GAS  /tmp/cczldUCb.s 			page 3
+
+
+  91              		@ args = 0, pretend = 0, frame = 0
+  92              		@ frame_needed = 0, uses_anonymous_args = 0
+  93              		@ link register save eliminated.
+  94              	.LVL2:
+  29:Core/gui/cbuf.c ****     return (cbuff->_put_index - cbuff->_get_index) % (cbuff->buf_actual_size);
+  95              		.loc 1 29 0
+  96 0000 0368     		ldr	r3, [r0]
+  97 0002 4268     		ldr	r2, [r0, #4]
+  98 0004 9B1A     		subs	r3, r3, r2
+  99 0006 41F20802 		movw	r2, #4104
+ 100 000a 8258     		ldr	r2, [r0, r2]
+ 101 000c B3FBF2F0 		udiv	r0, r3, r2
+ 102              	.LVL3:
+  30:Core/gui/cbuf.c **** }
+ 103              		.loc 1 30 0
+ 104 0010 02FB1030 		mls	r0, r2, r0, r3
+ 105 0014 7047     		bx	lr
+ 106              		.cfi_endproc
+ 107              	.LFE132:
+ 109              		.section	.text.Cbuf_Push,"ax",%progbits
+ 110              		.align	1
+ 111              		.global	Cbuf_Push
+ 112              		.syntax unified
+ 113              		.thumb
+ 114              		.thumb_func
+ 115              		.fpu fpv4-sp-d16
+ 117              	Cbuf_Push:
+ 118              	.LFB133:
+  31:Core/gui/cbuf.c **** 
+  32:Core/gui/cbuf.c **** /*写入缓冲区一个字节*/
+  33:Core/gui/cbuf.c **** void Cbuf_Push(cbuf_t *cbuff , uint8_t ch)
+  34:Core/gui/cbuf.c **** {
+ 119              		.loc 1 34 0
+ 120              		.cfi_startproc
+ 121              		@ args = 0, pretend = 0, frame = 0
+ 122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123              		@ link register save eliminated.
+ 124              	.LVL4:
+ 125 0000 10B4     		push	{r4}
+ 126              	.LCFI0:
+ 127              		.cfi_def_cfa_offset 4
+ 128              		.cfi_offset 4, -4
+  35:Core/gui/cbuf.c ****     (cbuff->_buffer)[(cbuff->_put_index ++ ) % cbuff->buf_actual_size] = ch;
+ 129              		.loc 1 35 0
+ 130 0002 0268     		ldr	r2, [r0]
+ 131 0004 531C     		adds	r3, r2, #1
+ 132 0006 0360     		str	r3, [r0]
+ 133 0008 41F20803 		movw	r3, #4104
+ 134 000c C458     		ldr	r4, [r0, r3]
+ 135 000e B2FBF4F3 		udiv	r3, r2, r4
+ 136 0012 04FB1323 		mls	r3, r4, r3, r2
+ 137 0016 1844     		add	r0, r0, r3
+ 138              	.LVL5:
+ 139 0018 0172     		strb	r1, [r0, #8]
+  36:Core/gui/cbuf.c **** }
+ 140              		.loc 1 36 0
+ 141 001a 5DF8044B 		ldr	r4, [sp], #4
+ARM GAS  /tmp/cczldUCb.s 			page 4
+
+
+ 142              	.LCFI1:
+ 143              		.cfi_restore 4
+ 144              		.cfi_def_cfa_offset 0
+ 145 001e 7047     		bx	lr
+ 146              		.cfi_endproc
+ 147              	.LFE133:
+ 149              		.section	.text.Cbuf_Pop,"ax",%progbits
+ 150              		.align	1
+ 151              		.global	Cbuf_Pop
+ 152              		.syntax unified
+ 153              		.thumb
+ 154              		.thumb_func
+ 155              		.fpu fpv4-sp-d16
+ 157              	Cbuf_Pop:
+ 158              	.LFB134:
+  37:Core/gui/cbuf.c **** 
+  38:Core/gui/cbuf.c **** /*读出缓冲区一个字节*/
+  39:Core/gui/cbuf.c **** uint8_t Cbuf_Pop(cbuf_t *cbuff)
+  40:Core/gui/cbuf.c **** {     
+ 159              		.loc 1 40 0
+ 160              		.cfi_startproc
+ 161              		@ args = 0, pretend = 0, frame = 0
+ 162              		@ frame_needed = 0, uses_anonymous_args = 0
+ 163              		@ link register save eliminated.
+ 164              	.LVL6:
+  41:Core/gui/cbuf.c ****      return (cbuff->_buffer)[(cbuff->_get_index ++ ) % cbuff->buf_actual_size];
+ 165              		.loc 1 41 0
+ 166 0000 4268     		ldr	r2, [r0, #4]
+ 167 0002 531C     		adds	r3, r2, #1
+ 168 0004 4360     		str	r3, [r0, #4]
+ 169 0006 41F20803 		movw	r3, #4104
+ 170 000a C158     		ldr	r1, [r0, r3]
+ 171 000c B2FBF1F3 		udiv	r3, r2, r1
+ 172 0010 01FB1323 		mls	r3, r1, r3, r2
+ 173 0014 1844     		add	r0, r0, r3
+ 174              	.LVL7:
+  42:Core/gui/cbuf.c **** }
+ 175              		.loc 1 42 0
+ 176 0016 007A     		ldrb	r0, [r0, #8]	@ zero_extendqisi2
+ 177 0018 7047     		bx	lr
+ 178              		.cfi_endproc
+ 179              	.LFE134:
+ 181              		.section	.text.Cbuf_Isfull,"ax",%progbits
+ 182              		.align	1
+ 183              		.global	Cbuf_Isfull
+ 184              		.syntax unified
+ 185              		.thumb
+ 186              		.thumb_func
+ 187              		.fpu fpv4-sp-d16
+ 189              	Cbuf_Isfull:
+ 190              	.LFB135:
+  43:Core/gui/cbuf.c **** 
+  44:Core/gui/cbuf.c **** /*判断缓冲区是否写满*/
+  45:Core/gui/cbuf.c **** uint8_t Cbuf_Isfull(cbuf_t *cbuff) //返回1表示满
+  46:Core/gui/cbuf.c **** {
+ 191              		.loc 1 46 0
+ 192              		.cfi_startproc
+ARM GAS  /tmp/cczldUCb.s 			page 5
+
+
+ 193              		@ args = 0, pretend = 0, frame = 0
+ 194              		@ frame_needed = 0, uses_anonymous_args = 0
+ 195              	.LVL8:
+ 196 0000 10B5     		push	{r4, lr}
+ 197              	.LCFI2:
+ 198              		.cfi_def_cfa_offset 8
+ 199              		.cfi_offset 4, -8
+ 200              		.cfi_offset 14, -4
+ 201 0002 0446     		mov	r4, r0
+  47:Core/gui/cbuf.c ****     uint8_t len = Cbuf_Len(cbuff);
+ 202              		.loc 1 47 0
+ 203 0004 FFF7FEFF 		bl	Cbuf_Len
+ 204              	.LVL9:
+  48:Core/gui/cbuf.c ****     return  (len == cbuff->buf_actual_size)? 1:0;
+ 205              		.loc 1 48 0
+ 206 0008 41F20803 		movw	r3, #4104
+ 207 000c E358     		ldr	r3, [r4, r3]
+ 208 000e C0B2     		uxtb	r0, r0
+  49:Core/gui/cbuf.c **** }
+ 209              		.loc 1 49 0
+ 210 0010 9842     		cmp	r0, r3
+ 211 0012 14BF     		ite	ne
+ 212 0014 0020     		movne	r0, #0
+ 213              	.LVL10:
+ 214 0016 0120     		moveq	r0, #1
+ 215 0018 10BD     		pop	{r4, pc}
+ 216              		.cfi_endproc
+ 217              	.LFE135:
+ 219              		.section	.text.Cbuf_Isempty,"ax",%progbits
+ 220              		.align	1
+ 221              		.global	Cbuf_Isempty
+ 222              		.syntax unified
+ 223              		.thumb
+ 224              		.thumb_func
+ 225              		.fpu fpv4-sp-d16
+ 227              	Cbuf_Isempty:
+ 228              	.LFB136:
+  50:Core/gui/cbuf.c **** 
+  51:Core/gui/cbuf.c **** /*判断缓冲区是否为空*/
+  52:Core/gui/cbuf.c **** uint8_t Cbuf_Isempty(cbuf_t *cbuff) //返回1表示空
+  53:Core/gui/cbuf.c **** {
+ 229              		.loc 1 53 0
+ 230              		.cfi_startproc
+ 231              		@ args = 0, pretend = 0, frame = 0
+ 232              		@ frame_needed = 0, uses_anonymous_args = 0
+ 233              	.LVL11:
+ 234 0000 08B5     		push	{r3, lr}
+ 235              	.LCFI3:
+ 236              		.cfi_def_cfa_offset 8
+ 237              		.cfi_offset 3, -8
+ 238              		.cfi_offset 14, -4
+  54:Core/gui/cbuf.c ****     uint8_t len = Cbuf_Len(cbuff);
+ 239              		.loc 1 54 0
+ 240 0002 FFF7FEFF 		bl	Cbuf_Len
+ 241              	.LVL12:
+ 242 0006 C0B2     		uxtb	r0, r0
+ 243              	.LVL13:
+ARM GAS  /tmp/cczldUCb.s 			page 6
+
+
+  55:Core/gui/cbuf.c ****     return  (len == 0)? 1:0;
+  56:Core/gui/cbuf.c **** }
+ 244              		.loc 1 56 0
+ 245 0008 B0FA80F0 		clz	r0, r0
+ 246              	.LVL14:
+ 247 000c 4009     		lsrs	r0, r0, #5
+ 248 000e 08BD     		pop	{r3, pc}
+ 249              		.cfi_endproc
+ 250              	.LFE136:
+ 252              		.text
+ 253              	.Letext0:
+ 254              		.file 2 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/machine/_default_ty
+ 255              		.file 3 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/sys/_stdint.h"
+ 256              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 257              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 258              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 259              		.file 7 "Core/gui/cbuf.h"
+ARM GAS  /tmp/cczldUCb.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 cbuf.c
+     /tmp/cczldUCb.s:18     .text.Cbuf_Init:0000000000000000 $t
+     /tmp/cczldUCb.s:25     .text.Cbuf_Init:0000000000000000 Cbuf_Init
+     /tmp/cczldUCb.s:48     .text.Set_Cbuf_Size:0000000000000000 $t
+     /tmp/cczldUCb.s:55     .text.Set_Cbuf_Size:0000000000000000 Set_Cbuf_Size
+     /tmp/cczldUCb.s:80     .text.Cbuf_Len:0000000000000000 $t
+     /tmp/cczldUCb.s:87     .text.Cbuf_Len:0000000000000000 Cbuf_Len
+     /tmp/cczldUCb.s:110    .text.Cbuf_Push:0000000000000000 $t
+     /tmp/cczldUCb.s:117    .text.Cbuf_Push:0000000000000000 Cbuf_Push
+     /tmp/cczldUCb.s:150    .text.Cbuf_Pop:0000000000000000 $t
+     /tmp/cczldUCb.s:157    .text.Cbuf_Pop:0000000000000000 Cbuf_Pop
+     /tmp/cczldUCb.s:182    .text.Cbuf_Isfull:0000000000000000 $t
+     /tmp/cczldUCb.s:189    .text.Cbuf_Isfull:0000000000000000 Cbuf_Isfull
+     /tmp/cczldUCb.s:220    .text.Cbuf_Isempty:0000000000000000 $t
+     /tmp/cczldUCb.s:227    .text.Cbuf_Isempty:0000000000000000 Cbuf_Isempty
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

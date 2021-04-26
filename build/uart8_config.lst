@@ -1,0 +1,548 @@
+ARM GAS  /tmp/ccLNkkja.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"uart8_config.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.uart8_init,"ax",%progbits
+  18              		.align	1
+  19              		.global	uart8_init
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	uart8_init:
+  26              	.LFB130:
+  27              		.file 1 "Core/gui/uart8_config.c"
+   1:Core/gui/uart8_config.c **** #include "uart8_config.h"
+   2:Core/gui/uart8_config.c **** 
+   3:Core/gui/uart8_config.c **** UART_HandleTypeDef huart8;
+   4:Core/gui/uart8_config.c **** DMA_HandleTypeDef hdma_uart8_rx;
+   5:Core/gui/uart8_config.c **** DMA_HandleTypeDef hdma_uart8_tx;
+   6:Core/gui/uart8_config.c **** 
+   7:Core/gui/uart8_config.c **** void uart8_init(void)
+   8:Core/gui/uart8_config.c **** {
+  28              		.loc 1 8 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+   9:Core/gui/uart8_config.c ****     huart8.Instance = UART8;
+  37              		.loc 1 9 0
+  38 0002 0B48     		ldr	r0, .L5
+  39 0004 0B4B     		ldr	r3, .L5+4
+  40 0006 0360     		str	r3, [r0]
+  10:Core/gui/uart8_config.c ****     huart8.Init.BaudRate = BAUDRATE;
+  41              		.loc 1 10 0
+  42 0008 4FF4E133 		mov	r3, #115200
+  43 000c 4360     		str	r3, [r0, #4]
+  11:Core/gui/uart8_config.c ****     huart8.Init.HwFlowCtl = UART_HWCONTROL_NONE; //硬件流控制
+  44              		.loc 1 11 0
+  45 000e 0023     		movs	r3, #0
+  46 0010 8361     		str	r3, [r0, #24]
+  12:Core/gui/uart8_config.c ****     huart8.Init.Mode = UART_MODE_TX_RX;
+ARM GAS  /tmp/ccLNkkja.s 			page 2
+
+
+  47              		.loc 1 12 0
+  48 0012 0C22     		movs	r2, #12
+  49 0014 4261     		str	r2, [r0, #20]
+  13:Core/gui/uart8_config.c ****     huart8.Init.OverSampling = UART_OVERSAMPLING_8;
+  50              		.loc 1 13 0
+  51 0016 4FF40042 		mov	r2, #32768
+  52 001a C261     		str	r2, [r0, #28]
+  14:Core/gui/uart8_config.c ****     huart8.Init.Parity = UART_PARITY_NONE;       //无奇偶校验
+  53              		.loc 1 14 0
+  54 001c 0361     		str	r3, [r0, #16]
+  15:Core/gui/uart8_config.c ****     huart8.Init.StopBits = UART_STOPBITS_1;
+  55              		.loc 1 15 0
+  56 001e C360     		str	r3, [r0, #12]
+  16:Core/gui/uart8_config.c ****     huart8.Init.WordLength = UART_WORDLENGTH_8B;
+  57              		.loc 1 16 0
+  58 0020 8360     		str	r3, [r0, #8]
+  17:Core/gui/uart8_config.c ****     
+  18:Core/gui/uart8_config.c ****     if (HAL_UART_Init(&huart8) != HAL_OK)
+  59              		.loc 1 18 0
+  60 0022 FFF7FEFF 		bl	HAL_UART_Init
+  61              	.LVL0:
+  62 0026 00B9     		cbnz	r0, .L4
+  63              	.L1:
+  64 0028 08BD     		pop	{r3, pc}
+  65              	.L4:
+  19:Core/gui/uart8_config.c ****     {
+  20:Core/gui/uart8_config.c ****         Error_Handler();
+  66              		.loc 1 20 0
+  67 002a FFF7FEFF 		bl	Error_Handler
+  68              	.LVL1:
+  21:Core/gui/uart8_config.c ****     }
+  22:Core/gui/uart8_config.c **** }
+  69              		.loc 1 22 0
+  70 002e FBE7     		b	.L1
+  71              	.L6:
+  72              		.align	2
+  73              	.L5:
+  74 0030 00000000 		.word	huart8
+  75 0034 007C0040 		.word	1073773568
+  76              		.cfi_endproc
+  77              	.LFE130:
+  79              		.section	.text.HAL_UART_MspInit,"ax",%progbits
+  80              		.align	1
+  81              		.global	HAL_UART_MspInit
+  82              		.syntax unified
+  83              		.thumb
+  84              		.thumb_func
+  85              		.fpu fpv4-sp-d16
+  87              	HAL_UART_MspInit:
+  88              	.LFB131:
+  23:Core/gui/uart8_config.c **** 
+  24:Core/gui/uart8_config.c **** 
+  25:Core/gui/uart8_config.c **** 
+  26:Core/gui/uart8_config.c **** 
+  27:Core/gui/uart8_config.c **** void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
+  28:Core/gui/uart8_config.c **** {
+  89              		.loc 1 28 0
+ARM GAS  /tmp/ccLNkkja.s 			page 3
+
+
+  90              		.cfi_startproc
+  91              		@ args = 0, pretend = 0, frame = 32
+  92              		@ frame_needed = 0, uses_anonymous_args = 0
+  93              	.LVL2:
+  29:Core/gui/uart8_config.c ****     GPIO_InitTypeDef GPIO_Initstruct;
+  30:Core/gui/uart8_config.c **** 
+  31:Core/gui/uart8_config.c ****     if(uartHandle->Instance == UART8)
+  94              		.loc 1 31 0
+  95 0000 0268     		ldr	r2, [r0]
+  96 0002 414B     		ldr	r3, .L14
+  97 0004 9A42     		cmp	r2, r3
+  98 0006 00D0     		beq	.L13
+  99 0008 7047     		bx	lr
+ 100              	.L13:
+  28:Core/gui/uart8_config.c ****     GPIO_InitTypeDef GPIO_Initstruct;
+ 101              		.loc 1 28 0
+ 102 000a 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 103              	.LCFI1:
+ 104              		.cfi_def_cfa_offset 32
+ 105              		.cfi_offset 4, -32
+ 106              		.cfi_offset 5, -28
+ 107              		.cfi_offset 6, -24
+ 108              		.cfi_offset 7, -20
+ 109              		.cfi_offset 8, -16
+ 110              		.cfi_offset 9, -12
+ 111              		.cfi_offset 10, -8
+ 112              		.cfi_offset 14, -4
+ 113 000e 88B0     		sub	sp, sp, #32
+ 114              	.LCFI2:
+ 115              		.cfi_def_cfa_offset 64
+ 116 0010 0446     		mov	r4, r0
+ 117              	.LBB2:
+  32:Core/gui/uart8_config.c ****     {
+  33:Core/gui/uart8_config.c ****         __HAL_RCC_GPIOE_CLK_ENABLE();
+ 118              		.loc 1 33 0
+ 119 0012 0025     		movs	r5, #0
+ 120 0014 0095     		str	r5, [sp]
+ 121 0016 03F5DE33 		add	r3, r3, #113664
+ 122 001a 1A6B     		ldr	r2, [r3, #48]
+ 123 001c 42F01002 		orr	r2, r2, #16
+ 124 0020 1A63     		str	r2, [r3, #48]
+ 125 0022 1A6B     		ldr	r2, [r3, #48]
+ 126 0024 02F01002 		and	r2, r2, #16
+ 127 0028 0092     		str	r2, [sp]
+ 128 002a 009A     		ldr	r2, [sp]
+ 129              	.LBE2:
+ 130              	.LBB3:
+  34:Core/gui/uart8_config.c ****         __HAL_RCC_UART8_CLK_ENABLE();
+ 131              		.loc 1 34 0
+ 132 002c 0195     		str	r5, [sp, #4]
+ 133 002e 1A6C     		ldr	r2, [r3, #64]
+ 134 0030 42F00042 		orr	r2, r2, #-2147483648
+ 135 0034 1A64     		str	r2, [r3, #64]
+ 136 0036 1A6C     		ldr	r2, [r3, #64]
+ 137 0038 02F00042 		and	r2, r2, #-2147483648
+ 138 003c 0192     		str	r2, [sp, #4]
+ 139 003e 019A     		ldr	r2, [sp, #4]
+ARM GAS  /tmp/ccLNkkja.s 			page 4
+
+
+ 140              	.LBE3:
+ 141              	.LBB4:
+  35:Core/gui/uart8_config.c ****         __HAL_RCC_DMA1_CLK_ENABLE();
+ 142              		.loc 1 35 0
+ 143 0040 0295     		str	r5, [sp, #8]
+ 144 0042 1A6B     		ldr	r2, [r3, #48]
+ 145 0044 42F40012 		orr	r2, r2, #2097152
+ 146 0048 1A63     		str	r2, [r3, #48]
+ 147 004a 1B6B     		ldr	r3, [r3, #48]
+ 148 004c 03F40013 		and	r3, r3, #2097152
+ 149 0050 0293     		str	r3, [sp, #8]
+ 150 0052 029B     		ldr	r3, [sp, #8]
+ 151              	.LBE4:
+  36:Core/gui/uart8_config.c **** 
+  37:Core/gui/uart8_config.c **** 
+  38:Core/gui/uart8_config.c ****         GPIO_Initstruct.Alternate = GPIO_AF8_UART8;
+ 152              		.loc 1 38 0
+ 153 0054 0823     		movs	r3, #8
+ 154 0056 0793     		str	r3, [sp, #28]
+  39:Core/gui/uart8_config.c ****         GPIO_Initstruct.Mode = GPIO_MODE_AF_PP;
+ 155              		.loc 1 39 0
+ 156 0058 4FF00208 		mov	r8, #2
+ 157 005c CDF81080 		str	r8, [sp, #16]
+  40:Core/gui/uart8_config.c ****         GPIO_Initstruct.Pin = UART8_TX_PIN | UART8_RX_PIN;
+ 158              		.loc 1 40 0
+ 159 0060 0327     		movs	r7, #3
+ 160 0062 0397     		str	r7, [sp, #12]
+  41:Core/gui/uart8_config.c ****         GPIO_Initstruct.Pull = GPIO_PULLDOWN;
+ 161              		.loc 1 41 0
+ 162 0064 CDF81480 		str	r8, [sp, #20]
+  42:Core/gui/uart8_config.c ****         GPIO_Initstruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 163              		.loc 1 42 0
+ 164 0068 0697     		str	r7, [sp, #24]
+  43:Core/gui/uart8_config.c ****         HAL_GPIO_Init(GPIOE, &GPIO_Initstruct);
+ 165              		.loc 1 43 0
+ 166 006a 03A9     		add	r1, sp, #12
+ 167 006c 2748     		ldr	r0, .L14+4
+ 168              	.LVL3:
+ 169 006e FFF7FEFF 		bl	HAL_GPIO_Init
+ 170              	.LVL4:
+  44:Core/gui/uart8_config.c **** 
+  45:Core/gui/uart8_config.c ****         hdma_uart8_rx.Instance = DMA1_Stream6;
+ 171              		.loc 1 45 0
+ 172 0072 274E     		ldr	r6, .L14+8
+ 173 0074 274B     		ldr	r3, .L14+12
+ 174 0076 3360     		str	r3, [r6]
+  46:Core/gui/uart8_config.c ****         hdma_uart8_rx.Init.Channel = DMA_CHANNEL_5;
+ 175              		.loc 1 46 0
+ 176 0078 4FF0206A 		mov	r10, #167772160
+ 177 007c C6F804A0 		str	r10, [r6, #4]
+  47:Core/gui/uart8_config.c ****         hdma_uart8_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+ 178              		.loc 1 47 0
+ 179 0080 B560     		str	r5, [r6, #8]
+  48:Core/gui/uart8_config.c ****         hdma_uart8_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+ 180              		.loc 1 48 0
+ 181 0082 7562     		str	r5, [r6, #36]
+  49:Core/gui/uart8_config.c ****         // hdma_uart8_rx.Init.MemBurst = DMA_MBURST_SINGLE; //存储器单次突发模式
+ARM GAS  /tmp/ccLNkkja.s 			page 5
+
+
+  50:Core/gui/uart8_config.c ****         hdma_uart8_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+ 182              		.loc 1 50 0
+ 183 0084 B561     		str	r5, [r6, #24]
+  51:Core/gui/uart8_config.c ****         hdma_uart8_rx.Init.MemInc = DMA_MINC_ENABLE;     //存储器地址自加
+ 184              		.loc 1 51 0
+ 185 0086 4FF48069 		mov	r9, #1024
+ 186 008a C6F81090 		str	r9, [r6, #16]
+  52:Core/gui/uart8_config.c ****         hdma_uart8_rx.Init.Mode = DMA_CIRCULAR;
+ 187              		.loc 1 52 0
+ 188 008e 4FF48073 		mov	r3, #256
+ 189 0092 F361     		str	r3, [r6, #28]
+  53:Core/gui/uart8_config.c ****         // hdma_uart8_rx.Init.PeriphBurst = DMA_PBURST_SINGLE;
+  54:Core/gui/uart8_config.c ****         hdma_uart8_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+ 190              		.loc 1 54 0
+ 191 0094 7561     		str	r5, [r6, #20]
+  55:Core/gui/uart8_config.c ****         hdma_uart8_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+ 192              		.loc 1 55 0
+ 193 0096 F560     		str	r5, [r6, #12]
+  56:Core/gui/uart8_config.c ****         hdma_uart8_rx.Init.Priority = DMA_PRIORITY_HIGH;
+ 194              		.loc 1 56 0
+ 195 0098 4FF40033 		mov	r3, #131072
+ 196 009c 3362     		str	r3, [r6, #32]
+  57:Core/gui/uart8_config.c ****         HAL_DMA_Init(&hdma_uart8_rx);
+ 197              		.loc 1 57 0
+ 198 009e 3046     		mov	r0, r6
+ 199 00a0 FFF7FEFF 		bl	HAL_DMA_Init
+ 200              	.LVL5:
+  58:Core/gui/uart8_config.c **** 
+  59:Core/gui/uart8_config.c ****         __HAL_LINKDMA(uartHandle, hdmarx, hdma_uart8_rx);
+ 201              		.loc 1 59 0
+ 202 00a4 6663     		str	r6, [r4, #52]
+ 203 00a6 B463     		str	r4, [r6, #56]
+  60:Core/gui/uart8_config.c **** 
+  61:Core/gui/uart8_config.c ****         hdma_uart8_tx.Instance = DMA1_Stream0;
+ 204              		.loc 1 61 0
+ 205 00a8 1B4E     		ldr	r6, .L14+16
+ 206 00aa 1C4B     		ldr	r3, .L14+20
+ 207 00ac 3360     		str	r3, [r6]
+  62:Core/gui/uart8_config.c ****         hdma_uart8_tx.Init.Channel = DMA_CHANNEL_5;
+ 208              		.loc 1 62 0
+ 209 00ae C6F804A0 		str	r10, [r6, #4]
+  63:Core/gui/uart8_config.c ****         hdma_uart8_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+ 210              		.loc 1 63 0
+ 211 00b2 4023     		movs	r3, #64
+ 212 00b4 B360     		str	r3, [r6, #8]
+  64:Core/gui/uart8_config.c ****         hdma_uart8_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+ 213              		.loc 1 64 0
+ 214 00b6 7562     		str	r5, [r6, #36]
+  65:Core/gui/uart8_config.c ****         // hdma_uart8_tx.Init.MemBurst = DMA_MBURST_SINGLE;
+  66:Core/gui/uart8_config.c ****         hdma_uart8_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+ 215              		.loc 1 66 0
+ 216 00b8 B561     		str	r5, [r6, #24]
+  67:Core/gui/uart8_config.c ****         hdma_uart8_tx.Init.MemInc = DMA_MINC_ENABLE;
+ 217              		.loc 1 67 0
+ 218 00ba C6F81090 		str	r9, [r6, #16]
+  68:Core/gui/uart8_config.c ****         hdma_uart8_tx.Init.Mode = DMA_NORMAL;
+ 219              		.loc 1 68 0
+ARM GAS  /tmp/ccLNkkja.s 			page 6
+
+
+ 220 00be F561     		str	r5, [r6, #28]
+  69:Core/gui/uart8_config.c ****         // hdma_uart8_tx.Init.PeriphBurst = DMA_PBURST_SINGLE;
+  70:Core/gui/uart8_config.c ****         hdma_uart8_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+ 221              		.loc 1 70 0
+ 222 00c0 7561     		str	r5, [r6, #20]
+  71:Core/gui/uart8_config.c ****         hdma_uart8_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+ 223              		.loc 1 71 0
+ 224 00c2 F560     		str	r5, [r6, #12]
+  72:Core/gui/uart8_config.c ****         hdma_uart8_tx.Init.Priority = DMA_PRIORITY_LOW;
+ 225              		.loc 1 72 0
+ 226 00c4 3562     		str	r5, [r6, #32]
+  73:Core/gui/uart8_config.c ****         HAL_DMA_Init(&hdma_uart8_tx);
+ 227              		.loc 1 73 0
+ 228 00c6 3046     		mov	r0, r6
+ 229 00c8 FFF7FEFF 		bl	HAL_DMA_Init
+ 230              	.LVL6:
+  74:Core/gui/uart8_config.c **** 
+  75:Core/gui/uart8_config.c ****         __HAL_LINKDMA(uartHandle, hdmatx, hdma_uart8_tx);
+ 231              		.loc 1 75 0
+ 232 00cc 2663     		str	r6, [r4, #48]
+ 233 00ce B463     		str	r4, [r6, #56]
+  76:Core/gui/uart8_config.c **** 
+  77:Core/gui/uart8_config.c ****         HAL_NVIC_EnableIRQ(UART8_IRQn);
+ 234              		.loc 1 77 0
+ 235 00d0 5320     		movs	r0, #83
+ 236 00d2 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 237              	.LVL7:
+  78:Core/gui/uart8_config.c ****         HAL_NVIC_SetPriority(UART8_IRQn, 3, 3);
+ 238              		.loc 1 78 0
+ 239 00d6 3A46     		mov	r2, r7
+ 240 00d8 3946     		mov	r1, r7
+ 241 00da 5320     		movs	r0, #83
+ 242 00dc FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 243              	.LVL8:
+  79:Core/gui/uart8_config.c **** 
+  80:Core/gui/uart8_config.c **** 
+  81:Core/gui/uart8_config.c ****         HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn);
+ 244              		.loc 1 81 0
+ 245 00e0 0B20     		movs	r0, #11
+ 246 00e2 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 247              	.LVL9:
+  82:Core/gui/uart8_config.c ****         HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 2, 3);
+ 248              		.loc 1 82 0
+ 249 00e6 3A46     		mov	r2, r7
+ 250 00e8 4146     		mov	r1, r8
+ 251 00ea 0B20     		movs	r0, #11
+ 252 00ec FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 253              	.LVL10:
+  83:Core/gui/uart8_config.c ****     
+  84:Core/gui/uart8_config.c ****         HAL_NVIC_EnableIRQ(DMA1_Stream6_IRQn);
+ 254              		.loc 1 84 0
+ 255 00f0 1120     		movs	r0, #17
+ 256 00f2 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 257              	.LVL11:
+  85:Core/gui/uart8_config.c ****         HAL_NVIC_SetPriority(DMA1_Stream6_IRQn, 2, 3);
+ 258              		.loc 1 85 0
+ 259 00f6 3A46     		mov	r2, r7
+ARM GAS  /tmp/ccLNkkja.s 			page 7
+
+
+ 260 00f8 4146     		mov	r1, r8
+ 261 00fa 1120     		movs	r0, #17
+ 262 00fc FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 263              	.LVL12:
+  86:Core/gui/uart8_config.c **** 
+  87:Core/gui/uart8_config.c ****         
+  88:Core/gui/uart8_config.c ****     }
+  89:Core/gui/uart8_config.c **** }
+ 264              		.loc 1 89 0
+ 265 0100 08B0     		add	sp, sp, #32
+ 266              	.LCFI3:
+ 267              		.cfi_def_cfa_offset 32
+ 268              		@ sp needed
+ 269 0102 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 270              	.LVL13:
+ 271              	.L15:
+ 272 0106 00BF     		.align	2
+ 273              	.L14:
+ 274 0108 007C0040 		.word	1073773568
+ 275 010c 00100240 		.word	1073876992
+ 276 0110 00000000 		.word	hdma_uart8_rx
+ 277 0114 A0600240 		.word	1073897632
+ 278 0118 00000000 		.word	hdma_uart8_tx
+ 279 011c 10600240 		.word	1073897488
+ 280              		.cfi_endproc
+ 281              	.LFE131:
+ 283              		.section	.text.UART8_IRQHandler,"ax",%progbits
+ 284              		.align	1
+ 285              		.global	UART8_IRQHandler
+ 286              		.syntax unified
+ 287              		.thumb
+ 288              		.thumb_func
+ 289              		.fpu fpv4-sp-d16
+ 291              	UART8_IRQHandler:
+ 292              	.LFB132:
+  90:Core/gui/uart8_config.c **** 
+  91:Core/gui/uart8_config.c **** 
+  92:Core/gui/uart8_config.c **** void UART8_IRQHandler(void)
+  93:Core/gui/uart8_config.c **** {
+ 293              		.loc 1 93 0
+ 294              		.cfi_startproc
+ 295              		@ args = 0, pretend = 0, frame = 0
+ 296              		@ frame_needed = 0, uses_anonymous_args = 0
+ 297 0000 08B5     		push	{r3, lr}
+ 298              	.LCFI4:
+ 299              		.cfi_def_cfa_offset 8
+ 300              		.cfi_offset 3, -8
+ 301              		.cfi_offset 14, -4
+  94:Core/gui/uart8_config.c ****     HAL_UART_IRQHandler(&huart8);
+ 302              		.loc 1 94 0
+ 303 0002 0248     		ldr	r0, .L18
+ 304 0004 FFF7FEFF 		bl	HAL_UART_IRQHandler
+ 305              	.LVL14:
+ 306 0008 08BD     		pop	{r3, pc}
+ 307              	.L19:
+ 308 000a 00BF     		.align	2
+ 309              	.L18:
+ARM GAS  /tmp/ccLNkkja.s 			page 8
+
+
+ 310 000c 00000000 		.word	huart8
+ 311              		.cfi_endproc
+ 312              	.LFE132:
+ 314              		.section	.text.DMA1_Stream0_IRQHandler,"ax",%progbits
+ 315              		.align	1
+ 316              		.global	DMA1_Stream0_IRQHandler
+ 317              		.syntax unified
+ 318              		.thumb
+ 319              		.thumb_func
+ 320              		.fpu fpv4-sp-d16
+ 322              	DMA1_Stream0_IRQHandler:
+ 323              	.LFB133:
+  95:Core/gui/uart8_config.c **** }
+  96:Core/gui/uart8_config.c **** 
+  97:Core/gui/uart8_config.c **** void DMA1_Stream0_IRQHandler(void)
+  98:Core/gui/uart8_config.c **** {
+ 324              		.loc 1 98 0
+ 325              		.cfi_startproc
+ 326              		@ args = 0, pretend = 0, frame = 0
+ 327              		@ frame_needed = 0, uses_anonymous_args = 0
+ 328 0000 08B5     		push	{r3, lr}
+ 329              	.LCFI5:
+ 330              		.cfi_def_cfa_offset 8
+ 331              		.cfi_offset 3, -8
+ 332              		.cfi_offset 14, -4
+  99:Core/gui/uart8_config.c ****   HAL_DMA_IRQHandler(&hdma_uart8_tx);
+ 333              		.loc 1 99 0
+ 334 0002 0248     		ldr	r0, .L22
+ 335 0004 FFF7FEFF 		bl	HAL_DMA_IRQHandler
+ 336              	.LVL15:
+ 337 0008 08BD     		pop	{r3, pc}
+ 338              	.L23:
+ 339 000a 00BF     		.align	2
+ 340              	.L22:
+ 341 000c 00000000 		.word	hdma_uart8_tx
+ 342              		.cfi_endproc
+ 343              	.LFE133:
+ 345              		.section	.text.DMA1_Stream6_IRQHandler,"ax",%progbits
+ 346              		.align	1
+ 347              		.global	DMA1_Stream6_IRQHandler
+ 348              		.syntax unified
+ 349              		.thumb
+ 350              		.thumb_func
+ 351              		.fpu fpv4-sp-d16
+ 353              	DMA1_Stream6_IRQHandler:
+ 354              	.LFB134:
+ 100:Core/gui/uart8_config.c **** }
+ 101:Core/gui/uart8_config.c **** 
+ 102:Core/gui/uart8_config.c **** void DMA1_Stream6_IRQHandler(void)
+ 103:Core/gui/uart8_config.c **** {
+ 355              		.loc 1 103 0
+ 356              		.cfi_startproc
+ 357              		@ args = 0, pretend = 0, frame = 0
+ 358              		@ frame_needed = 0, uses_anonymous_args = 0
+ 359 0000 08B5     		push	{r3, lr}
+ 360              	.LCFI6:
+ 361              		.cfi_def_cfa_offset 8
+ARM GAS  /tmp/ccLNkkja.s 			page 9
+
+
+ 362              		.cfi_offset 3, -8
+ 363              		.cfi_offset 14, -4
+ 104:Core/gui/uart8_config.c ****   HAL_DMA_IRQHandler(&hdma_uart8_rx);
+ 364              		.loc 1 104 0
+ 365 0002 0248     		ldr	r0, .L26
+ 366 0004 FFF7FEFF 		bl	HAL_DMA_IRQHandler
+ 367              	.LVL16:
+ 368 0008 08BD     		pop	{r3, pc}
+ 369              	.L27:
+ 370 000a 00BF     		.align	2
+ 371              	.L26:
+ 372 000c 00000000 		.word	hdma_uart8_rx
+ 373              		.cfi_endproc
+ 374              	.LFE134:
+ 376              		.comm	hdma_uart8_tx,96,4
+ 377              		.comm	hdma_uart8_rx,96,4
+ 378              		.comm	huart8,64,4
+ 379              		.text
+ 380              	.Letext0:
+ 381              		.file 2 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/machine/_default_ty
+ 382              		.file 3 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/sys/_stdint.h"
+ 383              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 384              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 385              		.file 6 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h"
+ 386              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 387              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 388              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 389              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 390              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 391              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h"
+ 392              		.file 13 "Core/Inc/main.h"
+ARM GAS  /tmp/ccLNkkja.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 uart8_config.c
+     /tmp/ccLNkkja.s:18     .text.uart8_init:0000000000000000 $t
+     /tmp/ccLNkkja.s:25     .text.uart8_init:0000000000000000 uart8_init
+     /tmp/ccLNkkja.s:74     .text.uart8_init:0000000000000030 $d
+                            *COM*:0000000000000040 huart8
+     /tmp/ccLNkkja.s:80     .text.HAL_UART_MspInit:0000000000000000 $t
+     /tmp/ccLNkkja.s:87     .text.HAL_UART_MspInit:0000000000000000 HAL_UART_MspInit
+     /tmp/ccLNkkja.s:274    .text.HAL_UART_MspInit:0000000000000108 $d
+                            *COM*:0000000000000060 hdma_uart8_rx
+                            *COM*:0000000000000060 hdma_uart8_tx
+     /tmp/ccLNkkja.s:284    .text.UART8_IRQHandler:0000000000000000 $t
+     /tmp/ccLNkkja.s:291    .text.UART8_IRQHandler:0000000000000000 UART8_IRQHandler
+     /tmp/ccLNkkja.s:310    .text.UART8_IRQHandler:000000000000000c $d
+     /tmp/ccLNkkja.s:315    .text.DMA1_Stream0_IRQHandler:0000000000000000 $t
+     /tmp/ccLNkkja.s:322    .text.DMA1_Stream0_IRQHandler:0000000000000000 DMA1_Stream0_IRQHandler
+     /tmp/ccLNkkja.s:341    .text.DMA1_Stream0_IRQHandler:000000000000000c $d
+     /tmp/ccLNkkja.s:346    .text.DMA1_Stream6_IRQHandler:0000000000000000 $t
+     /tmp/ccLNkkja.s:353    .text.DMA1_Stream6_IRQHandler:0000000000000000 DMA1_Stream6_IRQHandler
+     /tmp/ccLNkkja.s:372    .text.DMA1_Stream6_IRQHandler:000000000000000c $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+HAL_UART_Init
+Error_Handler
+HAL_GPIO_Init
+HAL_DMA_Init
+HAL_NVIC_EnableIRQ
+HAL_NVIC_SetPriority
+HAL_UART_IRQHandler
+HAL_DMA_IRQHandler

@@ -1,0 +1,570 @@
+ARM GAS  /tmp/ccvMdOP0.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"debug_data.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.debug_printf_dma,"ax",%progbits
+  18              		.align	1
+  19              		.global	debug_printf_dma
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	debug_printf_dma:
+  26              	.LFB131:
+  27              		.file 1 "Core/gui/debug_data.c"
+   1:Core/gui/debug_data.c **** #include "debug_data.h"
+   2:Core/gui/debug_data.c **** #include "uart8_config.h"
+   3:Core/gui/debug_data.c **** #include "cbuf.h"
+   4:Core/gui/debug_data.c **** 
+   5:Core/gui/debug_data.c **** #include "stdarg.h"
+   6:Core/gui/debug_data.c **** #include "stdlib.h"
+   7:Core/gui/debug_data.c **** #include <string.h>
+   8:Core/gui/debug_data.c **** #include <stdio.h>
+   9:Core/gui/debug_data.c **** #include <math.h>
+  10:Core/gui/debug_data.c **** #include "stdint.h"
+  11:Core/gui/debug_data.c **** 
+  12:Core/gui/debug_data.c **** uint8_t rx_buf[RX_BUF_MAX] = {};
+  13:Core/gui/debug_data.c **** 
+  14:Core/gui/debug_data.c **** 
+  15:Core/gui/debug_data.c **** static cbuf_t uart8_rx_buf; //接收缓冲区
+  16:Core/gui/debug_data.c **** static cbuf_t uart8_tx_buf; //发送缓冲区
+  17:Core/gui/debug_data.c **** 
+  18:Core/gui/debug_data.c **** 
+  19:Core/gui/debug_data.c **** /*debug_printf_dma*/
+  20:Core/gui/debug_data.c **** void debug_printf_dma(const char *__restrict__ __format, ...)   
+  21:Core/gui/debug_data.c **** {
+  28              		.loc 1 21 0
+  29              		.cfi_startproc
+  30              		@ args = 4, pretend = 16, frame = 264
+  31              		@ frame_needed = 0, uses_anonymous_args = 1
+  32              	.LVL0:
+  33 0000 0FB4     		push	{r0, r1, r2, r3}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 16
+  36              		.cfi_offset 0, -16
+  37              		.cfi_offset 1, -12
+ARM GAS  /tmp/ccvMdOP0.s 			page 2
+
+
+  38              		.cfi_offset 2, -8
+  39              		.cfi_offset 3, -4
+  40 0002 70B5     		push	{r4, r5, r6, lr}
+  41              	.LCFI1:
+  42              		.cfi_def_cfa_offset 32
+  43              		.cfi_offset 4, -32
+  44              		.cfi_offset 5, -28
+  45              		.cfi_offset 6, -24
+  46              		.cfi_offset 14, -20
+  47 0004 C2B0     		sub	sp, sp, #264
+  48              	.LCFI2:
+  49              		.cfi_def_cfa_offset 296
+  50 0006 46AB     		add	r3, sp, #280
+  51 0008 53F8045B 		ldr	r5, [r3], #4
+  22:Core/gui/debug_data.c ****     va_list arg;
+  23:Core/gui/debug_data.c ****     va_start(arg, __format);
+  52              		.loc 1 23 0
+  53 000c 1E46     		mov	r6, r3
+  54 000e 4193     		str	r3, [sp, #260]
+  24:Core/gui/debug_data.c **** 
+  25:Core/gui/debug_data.c ****     char tx_buf[256] = {0};
+  55              		.loc 1 25 0
+  56 0010 4FF48074 		mov	r4, #256
+  57 0014 2246     		mov	r2, r4
+  58 0016 0021     		movs	r1, #0
+  59 0018 01A8     		add	r0, sp, #4
+  60 001a FFF7FEFF 		bl	memset
+  61              	.LVL1:
+  26:Core/gui/debug_data.c ****     int len = vsnprintf(tx_buf, 256, __format, arg);
+  62              		.loc 1 26 0
+  63 001e 3346     		mov	r3, r6
+  64 0020 2A46     		mov	r2, r5
+  65 0022 2146     		mov	r1, r4
+  66 0024 01A8     		add	r0, sp, #4
+  67 0026 FFF7FEFF 		bl	vsnprintf
+  68              	.LVL2:
+  69 002a 0546     		mov	r5, r0
+  70              	.LVL3:
+  71              	.LBB2:
+  27:Core/gui/debug_data.c ****     va_end(arg);
+  28:Core/gui/debug_data.c **** 
+  29:Core/gui/debug_data.c ****     for(int i = 0; i < len; i++)
+  72              		.loc 1 29 0
+  73 002c 0024     		movs	r4, #0
+  74 002e 05E0     		b	.L2
+  75              	.LVL4:
+  76              	.L3:
+  30:Core/gui/debug_data.c ****     {
+  31:Core/gui/debug_data.c ****         Cbuf_Push(&uart8_tx_buf, tx_buf[i]);
+  77              		.loc 1 31 0 discriminator 3
+  78 0030 01AB     		add	r3, sp, #4
+  79 0032 195D     		ldrb	r1, [r3, r4]	@ zero_extendqisi2
+  80 0034 0548     		ldr	r0, .L5
+  81 0036 FFF7FEFF 		bl	Cbuf_Push
+  82              	.LVL5:
+  29:Core/gui/debug_data.c ****     {
+  83              		.loc 1 29 0 discriminator 3
+ARM GAS  /tmp/ccvMdOP0.s 			page 3
+
+
+  84 003a 0134     		adds	r4, r4, #1
+  85              	.LVL6:
+  86              	.L2:
+  29:Core/gui/debug_data.c ****     {
+  87              		.loc 1 29 0 is_stmt 0 discriminator 1
+  88 003c AC42     		cmp	r4, r5
+  89 003e F7DB     		blt	.L3
+  90              	.LBE2:
+  32:Core/gui/debug_data.c ****     }
+  33:Core/gui/debug_data.c **** }
+  91              		.loc 1 33 0 is_stmt 1
+  92 0040 42B0     		add	sp, sp, #264
+  93              	.LCFI3:
+  94              		.cfi_def_cfa_offset 32
+  95              		@ sp needed
+  96 0042 BDE87040 		pop	{r4, r5, r6, lr}
+  97              	.LCFI4:
+  98              		.cfi_restore 14
+  99              		.cfi_restore 6
+ 100              		.cfi_restore 5
+ 101              		.cfi_restore 4
+ 102              		.cfi_def_cfa_offset 16
+ 103              	.LVL7:
+ 104 0046 04B0     		add	sp, sp, #16
+ 105              	.LCFI5:
+ 106              		.cfi_restore 3
+ 107              		.cfi_restore 2
+ 108              		.cfi_restore 1
+ 109              		.cfi_restore 0
+ 110              		.cfi_def_cfa_offset 0
+ 111 0048 7047     		bx	lr
+ 112              	.L6:
+ 113 004a 00BF     		.align	2
+ 114              	.L5:
+ 115 004c 00000000 		.word	.LANCHOR0
+ 116              		.cfi_endproc
+ 117              	.LFE131:
+ 119              		.section	.text.uart8_receive_init,"ax",%progbits
+ 120              		.align	1
+ 121              		.global	uart8_receive_init
+ 122              		.syntax unified
+ 123              		.thumb
+ 124              		.thumb_func
+ 125              		.fpu fpv4-sp-d16
+ 127              	uart8_receive_init:
+ 128              	.LFB132:
+  34:Core/gui/debug_data.c **** 
+  35:Core/gui/debug_data.c **** 
+  36:Core/gui/debug_data.c **** /*开启一次DMA 接收 并且初始化接收数组*/
+  37:Core/gui/debug_data.c **** void uart8_receive_init(void)
+  38:Core/gui/debug_data.c **** {
+ 129              		.loc 1 38 0
+ 130              		.cfi_startproc
+ 131              		@ args = 0, pretend = 0, frame = 0
+ 132              		@ frame_needed = 0, uses_anonymous_args = 0
+ 133 0000 08B5     		push	{r3, lr}
+ 134              	.LCFI6:
+ARM GAS  /tmp/ccvMdOP0.s 			page 4
+
+
+ 135              		.cfi_def_cfa_offset 8
+ 136              		.cfi_offset 3, -8
+ 137              		.cfi_offset 14, -4
+  39:Core/gui/debug_data.c ****     HAL_UART_Receive_DMA(&huart8, (uint8_t *)rx_buf, RX_BUF_MAX);
+ 138              		.loc 1 39 0
+ 139 0002 1022     		movs	r2, #16
+ 140 0004 0549     		ldr	r1, .L9
+ 141 0006 0648     		ldr	r0, .L9+4
+ 142 0008 FFF7FEFF 		bl	HAL_UART_Receive_DMA
+ 143              	.LVL8:
+  40:Core/gui/debug_data.c ****     Cbuf_Init(&uart8_rx_buf);
+ 144              		.loc 1 40 0
+ 145 000c 0548     		ldr	r0, .L9+8
+ 146 000e FFF7FEFF 		bl	Cbuf_Init
+ 147              	.LVL9:
+  41:Core/gui/debug_data.c ****     Cbuf_Init(&uart8_tx_buf);
+ 148              		.loc 1 41 0
+ 149 0012 0548     		ldr	r0, .L9+12
+ 150 0014 FFF7FEFF 		bl	Cbuf_Init
+ 151              	.LVL10:
+ 152 0018 08BD     		pop	{r3, pc}
+ 153              	.L10:
+ 154 001a 00BF     		.align	2
+ 155              	.L9:
+ 156 001c 00000000 		.word	.LANCHOR1
+ 157 0020 00000000 		.word	huart8
+ 158 0024 00000000 		.word	.LANCHOR2
+ 159 0028 00000000 		.word	.LANCHOR0
+ 160              		.cfi_endproc
+ 161              	.LFE132:
+ 163              		.section	.text.HAL_UART_RxCpltCallback,"ax",%progbits
+ 164              		.align	1
+ 165              		.global	HAL_UART_RxCpltCallback
+ 166              		.syntax unified
+ 167              		.thumb
+ 168              		.thumb_func
+ 169              		.fpu fpv4-sp-d16
+ 171              	HAL_UART_RxCpltCallback:
+ 172              	.LFB133:
+  42:Core/gui/debug_data.c **** }
+  43:Core/gui/debug_data.c **** 
+  44:Core/gui/debug_data.c **** 
+  45:Core/gui/debug_data.c **** /*串口接收完成中断服务函数*/
+  46:Core/gui/debug_data.c **** void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+  47:Core/gui/debug_data.c **** {
+ 173              		.loc 1 47 0
+ 174              		.cfi_startproc
+ 175              		@ args = 0, pretend = 0, frame = 0
+ 176              		@ frame_needed = 0, uses_anonymous_args = 0
+ 177              	.LVL11:
+  48:Core/gui/debug_data.c ****     if(huart == &huart8)
+ 178              		.loc 1 48 0
+ 179 0000 074B     		ldr	r3, .L21
+ 180 0002 8342     		cmp	r3, r0
+ 181 0004 00D0     		beq	.L20
+ 182 0006 7047     		bx	lr
+ 183              	.L20:
+ARM GAS  /tmp/ccvMdOP0.s 			page 5
+
+
+  47:Core/gui/debug_data.c ****     if(huart == &huart8)
+ 184              		.loc 1 47 0
+ 185 0008 10B5     		push	{r4, lr}
+ 186              	.LCFI7:
+ 187              		.cfi_def_cfa_offset 8
+ 188              		.cfi_offset 4, -8
+ 189              		.cfi_offset 14, -4
+ 190 000a 0024     		movs	r4, #0
+ 191 000c 05E0     		b	.L12
+ 192              	.LVL12:
+ 193              	.L14:
+ 194              	.LBB3:
+  49:Core/gui/debug_data.c ****     {
+  50:Core/gui/debug_data.c ****         for(int i = 0; i < RX_BUF_MAX; i++)
+  51:Core/gui/debug_data.c ****         {
+  52:Core/gui/debug_data.c ****             Cbuf_Push(&uart8_rx_buf, rx_buf[i]);
+ 195              		.loc 1 52 0 discriminator 3
+ 196 000e 054B     		ldr	r3, .L21+4
+ 197 0010 195D     		ldrb	r1, [r3, r4]	@ zero_extendqisi2
+ 198 0012 0548     		ldr	r0, .L21+8
+ 199 0014 FFF7FEFF 		bl	Cbuf_Push
+ 200              	.LVL13:
+  50:Core/gui/debug_data.c ****         {
+ 201              		.loc 1 50 0 discriminator 3
+ 202 0018 0134     		adds	r4, r4, #1
+ 203              	.LVL14:
+ 204              	.L12:
+  50:Core/gui/debug_data.c ****         {
+ 205              		.loc 1 50 0 is_stmt 0 discriminator 1
+ 206 001a 0F2C     		cmp	r4, #15
+ 207 001c F7DD     		ble	.L14
+ 208 001e 10BD     		pop	{r4, pc}
+ 209              	.LVL15:
+ 210              	.L22:
+ 211              		.align	2
+ 212              	.L21:
+ 213 0020 00000000 		.word	huart8
+ 214 0024 00000000 		.word	.LANCHOR1
+ 215 0028 00000000 		.word	.LANCHOR2
+ 216              	.LBE3:
+ 217              		.cfi_endproc
+ 218              	.LFE133:
+ 220              		.section	.text.get_rxcbuf_data,"ax",%progbits
+ 221              		.align	1
+ 222              		.global	get_rxcbuf_data
+ 223              		.syntax unified
+ 224              		.thumb
+ 225              		.thumb_func
+ 226              		.fpu fpv4-sp-d16
+ 228              	get_rxcbuf_data:
+ 229              	.LFB134:
+  53:Core/gui/debug_data.c ****         }
+  54:Core/gui/debug_data.c ****     }
+  55:Core/gui/debug_data.c **** }
+  56:Core/gui/debug_data.c **** 
+  57:Core/gui/debug_data.c **** /*用于从rxbuf获取小于16位的数据*/
+  58:Core/gui/debug_data.c **** void get_rxcbuf_data(void)
+ARM GAS  /tmp/ccvMdOP0.s 			page 6
+
+
+  59:Core/gui/debug_data.c **** {
+ 230              		.loc 1 59 0 is_stmt 1
+ 231              		.cfi_startproc
+ 232              		@ args = 0, pretend = 0, frame = 0
+ 233              		@ frame_needed = 0, uses_anonymous_args = 0
+ 234 0000 38B5     		push	{r3, r4, r5, lr}
+ 235              	.LCFI8:
+ 236              		.cfi_def_cfa_offset 16
+ 237              		.cfi_offset 3, -16
+ 238              		.cfi_offset 4, -12
+ 239              		.cfi_offset 5, -8
+ 240              		.cfi_offset 14, -4
+  60:Core/gui/debug_data.c ****     int len = RX_BUF_MAX - __HAL_DMA_GET_COUNTER(&hdma_uart8_rx);
+ 241              		.loc 1 60 0
+ 242 0002 0D4B     		ldr	r3, .L29
+ 243 0004 1B68     		ldr	r3, [r3]
+ 244 0006 5D68     		ldr	r5, [r3, #4]
+ 245              	.LVL16:
+  61:Core/gui/debug_data.c ****     if(len !=0)
+ 246              		.loc 1 61 0
+ 247 0008 D5F11005 		rsbs	r5, r5, #16
+ 248              	.LVL17:
+ 249 000c 00D1     		bne	.L28
+ 250              	.L23:
+ 251 000e 38BD     		pop	{r3, r4, r5, pc}
+ 252              	.LVL18:
+ 253              	.L28:
+  62:Core/gui/debug_data.c ****     {
+  63:Core/gui/debug_data.c ****         HAL_UART_DMAStop(&huart8);
+ 254              		.loc 1 63 0
+ 255 0010 0A48     		ldr	r0, .L29+4
+ 256 0012 FFF7FEFF 		bl	HAL_UART_DMAStop
+ 257              	.LVL19:
+ 258              	.LBB4:
+  64:Core/gui/debug_data.c ****         for(int i = 0; i < len; i++)
+ 259              		.loc 1 64 0
+ 260 0016 0024     		movs	r4, #0
+ 261 0018 05E0     		b	.L25
+ 262              	.LVL20:
+ 263              	.L26:
+  65:Core/gui/debug_data.c ****         {
+  66:Core/gui/debug_data.c ****             Cbuf_Push(&uart8_rx_buf,rx_buf[i]);
+ 264              		.loc 1 66 0 discriminator 3
+ 265 001a 094B     		ldr	r3, .L29+8
+ 266 001c 195D     		ldrb	r1, [r3, r4]	@ zero_extendqisi2
+ 267 001e 0948     		ldr	r0, .L29+12
+ 268 0020 FFF7FEFF 		bl	Cbuf_Push
+ 269              	.LVL21:
+  64:Core/gui/debug_data.c ****         for(int i = 0; i < len; i++)
+ 270              		.loc 1 64 0 discriminator 3
+ 271 0024 0134     		adds	r4, r4, #1
+ 272              	.LVL22:
+ 273              	.L25:
+  64:Core/gui/debug_data.c ****         for(int i = 0; i < len; i++)
+ 274              		.loc 1 64 0 is_stmt 0 discriminator 1
+ 275 0026 AC42     		cmp	r4, r5
+ 276 0028 F7DB     		blt	.L26
+ARM GAS  /tmp/ccvMdOP0.s 			page 7
+
+
+ 277              	.LBE4:
+  67:Core/gui/debug_data.c ****         }
+  68:Core/gui/debug_data.c ****         HAL_UART_Receive_DMA(&huart8, (uint8_t *)rx_buf, RX_BUF_MAX);
+ 278              		.loc 1 68 0 is_stmt 1
+ 279 002a 1022     		movs	r2, #16
+ 280 002c 0449     		ldr	r1, .L29+8
+ 281 002e 0348     		ldr	r0, .L29+4
+ 282 0030 FFF7FEFF 		bl	HAL_UART_Receive_DMA
+ 283              	.LVL23:
+  69:Core/gui/debug_data.c ****     }
+  70:Core/gui/debug_data.c **** }
+ 284              		.loc 1 70 0
+ 285 0034 EBE7     		b	.L23
+ 286              	.L30:
+ 287 0036 00BF     		.align	2
+ 288              	.L29:
+ 289 0038 00000000 		.word	hdma_uart8_rx
+ 290 003c 00000000 		.word	huart8
+ 291 0040 00000000 		.word	.LANCHOR1
+ 292 0044 00000000 		.word	.LANCHOR2
+ 293              		.cfi_endproc
+ 294              	.LFE134:
+ 296              		.section	.text.uart8_transmit,"ax",%progbits
+ 297              		.align	1
+ 298              		.global	uart8_transmit
+ 299              		.syntax unified
+ 300              		.thumb
+ 301              		.thumb_func
+ 302              		.fpu fpv4-sp-d16
+ 304              	uart8_transmit:
+ 305              	.LFB135:
+  71:Core/gui/debug_data.c **** 
+  72:Core/gui/debug_data.c **** void uart8_transmit(void)
+  73:Core/gui/debug_data.c **** {
+ 306              		.loc 1 73 0
+ 307              		.cfi_startproc
+ 308              		@ args = 0, pretend = 0, frame = 0
+ 309              		@ frame_needed = 0, uses_anonymous_args = 0
+ 310 0000 70B5     		push	{r4, r5, r6, lr}
+ 311              	.LCFI9:
+ 312              		.cfi_def_cfa_offset 16
+ 313              		.cfi_offset 4, -16
+ 314              		.cfi_offset 5, -12
+ 315              		.cfi_offset 6, -8
+ 316              		.cfi_offset 14, -4
+  74:Core/gui/debug_data.c ****     int len = uart8_tx_buf._put_index - uart8_tx_buf._get_index;
+ 317              		.loc 1 74 0
+ 318 0002 0B4B     		ldr	r3, .L38
+ 319 0004 1E68     		ldr	r6, [r3]
+ 320 0006 5B68     		ldr	r3, [r3, #4]
+ 321 0008 F61A     		subs	r6, r6, r3
+ 322              	.LVL24:
+  75:Core/gui/debug_data.c ****     static uint8_t tx_buf[255] = {};
+  76:Core/gui/debug_data.c ****     if(len != 0)
+ 323              		.loc 1 76 0
+ 324 000a 16B1     		cbz	r6, .L37
+ 325 000c 3546     		mov	r5, r6
+ARM GAS  /tmp/ccvMdOP0.s 			page 8
+
+
+ 326 000e 0024     		movs	r4, #0
+ 327 0010 06E0     		b	.L32
+ 328              	.L37:
+ 329 0012 70BD     		pop	{r4, r5, r6, pc}
+ 330              	.LVL25:
+ 331              	.L34:
+ 332              	.LBB5:
+  77:Core/gui/debug_data.c ****     {
+  78:Core/gui/debug_data.c ****         for(int i = 0; i < len; i++)
+  79:Core/gui/debug_data.c ****         {
+  80:Core/gui/debug_data.c ****             tx_buf[i] = Cbuf_Pop(&uart8_tx_buf);
+ 333              		.loc 1 80 0 discriminator 3
+ 334 0014 0648     		ldr	r0, .L38
+ 335 0016 FFF7FEFF 		bl	Cbuf_Pop
+ 336              	.LVL26:
+ 337 001a 064B     		ldr	r3, .L38+4
+ 338 001c 1855     		strb	r0, [r3, r4]
+  78:Core/gui/debug_data.c ****         {
+ 339              		.loc 1 78 0 discriminator 3
+ 340 001e 0134     		adds	r4, r4, #1
+ 341              	.LVL27:
+ 342              	.L32:
+  78:Core/gui/debug_data.c ****         {
+ 343              		.loc 1 78 0 is_stmt 0 discriminator 1
+ 344 0020 AC42     		cmp	r4, r5
+ 345 0022 F7DB     		blt	.L34
+ 346              	.LBE5:
+  81:Core/gui/debug_data.c ****         }
+  82:Core/gui/debug_data.c ****         HAL_UART_Transmit_DMA(&huart8, (uint8_t *)tx_buf, len);
+ 347              		.loc 1 82 0 is_stmt 1
+ 348 0024 B2B2     		uxth	r2, r6
+ 349 0026 0349     		ldr	r1, .L38+4
+ 350 0028 0348     		ldr	r0, .L38+8
+ 351 002a FFF7FEFF 		bl	HAL_UART_Transmit_DMA
+ 352              	.LVL28:
+ 353 002e 70BD     		pop	{r4, r5, r6, pc}
+ 354              	.LVL29:
+ 355              	.L39:
+ 356              		.align	2
+ 357              	.L38:
+ 358 0030 00000000 		.word	.LANCHOR0
+ 359 0034 00000000 		.word	.LANCHOR3
+ 360 0038 00000000 		.word	huart8
+ 361              		.cfi_endproc
+ 362              	.LFE135:
+ 364              		.global	rx_buf
+ 365              		.section	.bss.rx_buf,"aw",%nobits
+ 366              		.align	2
+ 367              		.set	.LANCHOR1,. + 0
+ 370              	rx_buf:
+ 371 0000 00000000 		.space	16
+ 371      00000000 
+ 371      00000000 
+ 371      00000000 
+ 372              		.section	.bss.tx_buf.10436,"aw",%nobits
+ 373              		.align	2
+ 374              		.set	.LANCHOR3,. + 0
+ARM GAS  /tmp/ccvMdOP0.s 			page 9
+
+
+ 377              	tx_buf.10436:
+ 378 0000 00000000 		.space	255
+ 378      00000000 
+ 378      00000000 
+ 378      00000000 
+ 378      00000000 
+ 379              		.section	.bss.uart8_rx_buf,"aw",%nobits
+ 380              		.align	2
+ 381              		.set	.LANCHOR2,. + 0
+ 384              	uart8_rx_buf:
+ 385 0000 00000000 		.space	4108
+ 385      00000000 
+ 385      00000000 
+ 385      00000000 
+ 385      00000000 
+ 386              		.section	.bss.uart8_tx_buf,"aw",%nobits
+ 387              		.align	2
+ 388              		.set	.LANCHOR0,. + 0
+ 391              	uart8_tx_buf:
+ 392 0000 00000000 		.space	4108
+ 392      00000000 
+ 392      00000000 
+ 392      00000000 
+ 392      00000000 
+ 393              		.text
+ 394              	.Letext0:
+ 395              		.file 2 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/machine/_default_ty
+ 396              		.file 3 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/sys/_stdint.h"
+ 397              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 398              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 399              		.file 6 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h"
+ 400              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 401              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 402              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 403              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 404              		.file 11 "Core/gui/debug_data.h"
+ 405              		.file 12 "Core/gui/cbuf.h"
+ 406              		.file 13 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/lib/gcc/arm-none-eabi/6.3.1/include/stda
+ 407              		.file 14 "<built-in>"
+ 408              		.file 15 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/sys/lock.h"
+ 409              		.file 16 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/sys/_types.h"
+ 410              		.file 17 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/lib/gcc/arm-none-eabi/6.3.1/include/stdd
+ 411              		.file 18 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/sys/reent.h"
+ 412              		.file 19 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/stdlib.h"
+ 413              		.file 20 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/math.h"
+ 414              		.file 21 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/stdio.h"
+ARM GAS  /tmp/ccvMdOP0.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 debug_data.c
+     /tmp/ccvMdOP0.s:18     .text.debug_printf_dma:0000000000000000 $t
+     /tmp/ccvMdOP0.s:25     .text.debug_printf_dma:0000000000000000 debug_printf_dma
+     /tmp/ccvMdOP0.s:115    .text.debug_printf_dma:000000000000004c $d
+     /tmp/ccvMdOP0.s:120    .text.uart8_receive_init:0000000000000000 $t
+     /tmp/ccvMdOP0.s:127    .text.uart8_receive_init:0000000000000000 uart8_receive_init
+     /tmp/ccvMdOP0.s:156    .text.uart8_receive_init:000000000000001c $d
+     /tmp/ccvMdOP0.s:164    .text.HAL_UART_RxCpltCallback:0000000000000000 $t
+     /tmp/ccvMdOP0.s:171    .text.HAL_UART_RxCpltCallback:0000000000000000 HAL_UART_RxCpltCallback
+     /tmp/ccvMdOP0.s:213    .text.HAL_UART_RxCpltCallback:0000000000000020 $d
+     /tmp/ccvMdOP0.s:221    .text.get_rxcbuf_data:0000000000000000 $t
+     /tmp/ccvMdOP0.s:228    .text.get_rxcbuf_data:0000000000000000 get_rxcbuf_data
+     /tmp/ccvMdOP0.s:289    .text.get_rxcbuf_data:0000000000000038 $d
+     /tmp/ccvMdOP0.s:297    .text.uart8_transmit:0000000000000000 $t
+     /tmp/ccvMdOP0.s:304    .text.uart8_transmit:0000000000000000 uart8_transmit
+     /tmp/ccvMdOP0.s:358    .text.uart8_transmit:0000000000000030 $d
+     /tmp/ccvMdOP0.s:370    .bss.rx_buf:0000000000000000 rx_buf
+     /tmp/ccvMdOP0.s:366    .bss.rx_buf:0000000000000000 $d
+     /tmp/ccvMdOP0.s:373    .bss.tx_buf.10436:0000000000000000 $d
+     /tmp/ccvMdOP0.s:377    .bss.tx_buf.10436:0000000000000000 tx_buf.10436
+     /tmp/ccvMdOP0.s:380    .bss.uart8_rx_buf:0000000000000000 $d
+     /tmp/ccvMdOP0.s:384    .bss.uart8_rx_buf:0000000000000000 uart8_rx_buf
+     /tmp/ccvMdOP0.s:387    .bss.uart8_tx_buf:0000000000000000 $d
+     /tmp/ccvMdOP0.s:391    .bss.uart8_tx_buf:0000000000000000 uart8_tx_buf
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+memset
+vsnprintf
+Cbuf_Push
+HAL_UART_Receive_DMA
+Cbuf_Init
+huart8
+HAL_UART_DMAStop
+hdma_uart8_rx
+Cbuf_Pop
+HAL_UART_Transmit_DMA

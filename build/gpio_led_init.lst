@@ -1,0 +1,212 @@
+ARM GAS  /tmp/cc7BpctY.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"gpio_led_init.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.gpio_led_init,"ax",%progbits
+  18              		.align	1
+  19              		.global	gpio_led_init
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	gpio_led_init:
+  26              	.LFB130:
+  27              		.file 1 "Core/periphery/gpio_led_init.c"
+   1:Core/periphery/gpio_led_init.c **** #include "gpio_led_init.h"
+   2:Core/periphery/gpio_led_init.c **** 
+   3:Core/periphery/gpio_led_init.c **** 
+   4:Core/periphery/gpio_led_init.c **** /*led init led_g PF14 led_r PE11*/
+   5:Core/periphery/gpio_led_init.c **** void gpio_led_init(void)
+   6:Core/periphery/gpio_led_init.c **** {   
+  28              		.loc 1 6 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 56
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 32
+  35              		.cfi_offset 4, -32
+  36              		.cfi_offset 5, -28
+  37              		.cfi_offset 6, -24
+  38              		.cfi_offset 7, -20
+  39              		.cfi_offset 8, -16
+  40              		.cfi_offset 9, -12
+  41              		.cfi_offset 10, -8
+  42              		.cfi_offset 14, -4
+  43 0004 8EB0     		sub	sp, sp, #56
+  44              	.LCFI1:
+  45              		.cfi_def_cfa_offset 88
+  46              	.LBB2:
+   7:Core/periphery/gpio_led_init.c ****     GPIO_InitTypeDef GPIOE_Structinit;
+   8:Core/periphery/gpio_led_init.c ****     GPIO_InitTypeDef GPIOF_Structinit;
+   9:Core/periphery/gpio_led_init.c **** 
+  10:Core/periphery/gpio_led_init.c ****     __HAL_RCC_GPIOE_CLK_ENABLE();
+  47              		.loc 1 10 0
+  48 0006 0024     		movs	r4, #0
+ARM GAS  /tmp/cc7BpctY.s 			page 2
+
+
+  49 0008 0094     		str	r4, [sp]
+  50 000a 294B     		ldr	r3, .L3
+  51 000c 1A6B     		ldr	r2, [r3, #48]
+  52 000e 42F01002 		orr	r2, r2, #16
+  53 0012 1A63     		str	r2, [r3, #48]
+  54 0014 1A6B     		ldr	r2, [r3, #48]
+  55 0016 02F01002 		and	r2, r2, #16
+  56 001a 0092     		str	r2, [sp]
+  57 001c 009A     		ldr	r2, [sp]
+  58              	.LBE2:
+  59              	.LBB3:
+  11:Core/periphery/gpio_led_init.c ****     __HAL_RCC_GPIOF_CLK_ENABLE();
+  60              		.loc 1 11 0
+  61 001e 0194     		str	r4, [sp, #4]
+  62 0020 1A6B     		ldr	r2, [r3, #48]
+  63 0022 42F02002 		orr	r2, r2, #32
+  64 0026 1A63     		str	r2, [r3, #48]
+  65 0028 1A6B     		ldr	r2, [r3, #48]
+  66 002a 02F02002 		and	r2, r2, #32
+  67 002e 0192     		str	r2, [sp, #4]
+  68 0030 019A     		ldr	r2, [sp, #4]
+  69              	.LBE3:
+  70              	.LBB4:
+  12:Core/periphery/gpio_led_init.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+  71              		.loc 1 12 0
+  72 0032 0294     		str	r4, [sp, #8]
+  73 0034 1A6B     		ldr	r2, [r3, #48]
+  74 0036 42F00102 		orr	r2, r2, #1
+  75 003a 1A63     		str	r2, [r3, #48]
+  76 003c 1A6B     		ldr	r2, [r3, #48]
+  77 003e 02F00102 		and	r2, r2, #1
+  78 0042 0292     		str	r2, [sp, #8]
+  79 0044 029A     		ldr	r2, [sp, #8]
+  80              	.LBE4:
+  81              	.LBB5:
+  13:Core/periphery/gpio_led_init.c ****     __HAL_RCC_GPIOH_CLK_ENABLE();
+  82              		.loc 1 13 0
+  83 0046 0394     		str	r4, [sp, #12]
+  84 0048 1A6B     		ldr	r2, [r3, #48]
+  85 004a 42F08002 		orr	r2, r2, #128
+  86 004e 1A63     		str	r2, [r3, #48]
+  87 0050 1B6B     		ldr	r3, [r3, #48]
+  88 0052 03F08003 		and	r3, r3, #128
+  89 0056 0393     		str	r3, [sp, #12]
+  90 0058 039B     		ldr	r3, [sp, #12]
+  91              	.LBE5:
+  14:Core/periphery/gpio_led_init.c **** 
+  15:Core/periphery/gpio_led_init.c ****     GPIOE_Structinit.Mode = GPIO_MODE_OUTPUT_PP;
+  92              		.loc 1 15 0
+  93 005a 0125     		movs	r5, #1
+  94 005c 0A95     		str	r5, [sp, #40]
+  16:Core/periphery/gpio_led_init.c ****     GPIOE_Structinit.Pin = GPIO_R_PIN;
+  95              		.loc 1 16 0
+  96 005e 4FF40069 		mov	r9, #2048
+  97 0062 CDF82490 		str	r9, [sp, #36]
+  17:Core/periphery/gpio_led_init.c ****     GPIOE_Structinit.Pull = GPIO_PULLDOWN;
+  98              		.loc 1 17 0
+ARM GAS  /tmp/cc7BpctY.s 			page 3
+
+
+  99 0066 4FF0020A 		mov	r10, #2
+ 100 006a CDF82CA0 		str	r10, [sp, #44]
+  18:Core/periphery/gpio_led_init.c ****     GPIOE_Structinit.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 101              		.loc 1 18 0
+ 102 006e 0326     		movs	r6, #3
+ 103 0070 0C96     		str	r6, [sp, #48]
+  19:Core/periphery/gpio_led_init.c ****     HAL_GPIO_Init(GPIO_R_PORT, &GPIOE_Structinit);
+ 104              		.loc 1 19 0
+ 105 0072 DFF84480 		ldr	r8, .L3+8
+ 106 0076 09A9     		add	r1, sp, #36
+ 107 0078 4046     		mov	r0, r8
+ 108 007a FFF7FEFF 		bl	HAL_GPIO_Init
+ 109              	.LVL0:
+  20:Core/periphery/gpio_led_init.c **** 
+  21:Core/periphery/gpio_led_init.c ****     GPIOF_Structinit.Mode = GPIO_MODE_OUTPUT_PP;
+ 110              		.loc 1 21 0
+ 111 007e 0595     		str	r5, [sp, #20]
+  22:Core/periphery/gpio_led_init.c ****     GPIOF_Structinit.Pin = GPIO_G_PIN;
+ 112              		.loc 1 22 0
+ 113 0080 4FF48047 		mov	r7, #16384
+ 114 0084 0497     		str	r7, [sp, #16]
+  23:Core/periphery/gpio_led_init.c ****     GPIOF_Structinit.Pull = GPIO_PULLDOWN;
+ 115              		.loc 1 23 0
+ 116 0086 CDF818A0 		str	r10, [sp, #24]
+  24:Core/periphery/gpio_led_init.c ****     GPIOF_Structinit.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 117              		.loc 1 24 0
+ 118 008a 0796     		str	r6, [sp, #28]
+  25:Core/periphery/gpio_led_init.c ****     HAL_GPIO_Init(GPIO_G_PORT, &GPIOF_Structinit);
+ 119              		.loc 1 25 0
+ 120 008c 094E     		ldr	r6, .L3+4
+ 121 008e 04A9     		add	r1, sp, #16
+ 122 0090 3046     		mov	r0, r6
+ 123 0092 FFF7FEFF 		bl	HAL_GPIO_Init
+ 124              	.LVL1:
+  26:Core/periphery/gpio_led_init.c **** 
+  27:Core/periphery/gpio_led_init.c ****     HAL_GPIO_WritePin(GPIO_R_PORT, GPIO_R_PIN, 0);
+ 125              		.loc 1 27 0
+ 126 0096 2246     		mov	r2, r4
+ 127 0098 4946     		mov	r1, r9
+ 128 009a 4046     		mov	r0, r8
+ 129 009c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 130              	.LVL2:
+  28:Core/periphery/gpio_led_init.c ****     HAL_GPIO_WritePin(GPIO_G_PORT, GPIO_G_PIN, 1);
+ 131              		.loc 1 28 0
+ 132 00a0 2A46     		mov	r2, r5
+ 133 00a2 3946     		mov	r1, r7
+ 134 00a4 3046     		mov	r0, r6
+ 135 00a6 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 136              	.LVL3:
+  29:Core/periphery/gpio_led_init.c **** }
+ 137              		.loc 1 29 0
+ 138 00aa 0EB0     		add	sp, sp, #56
+ 139              	.LCFI2:
+ 140              		.cfi_def_cfa_offset 32
+ 141              		@ sp needed
+ 142 00ac BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 143              	.L4:
+ARM GAS  /tmp/cc7BpctY.s 			page 4
+
+
+ 144              		.align	2
+ 145              	.L3:
+ 146 00b0 00380240 		.word	1073887232
+ 147 00b4 00140240 		.word	1073878016
+ 148 00b8 00100240 		.word	1073876992
+ 149              		.cfi_endproc
+ 150              	.LFE130:
+ 152              		.text
+ 153              	.Letext0:
+ 154              		.file 2 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/machine/_default_ty
+ 155              		.file 3 "/usr/lib/gcc/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include/sys/_stdint.h"
+ 156              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 157              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 158              		.file 6 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h"
+ 159              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 160              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  /tmp/cc7BpctY.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 gpio_led_init.c
+     /tmp/cc7BpctY.s:18     .text.gpio_led_init:0000000000000000 $t
+     /tmp/cc7BpctY.s:25     .text.gpio_led_init:0000000000000000 gpio_led_init
+     /tmp/cc7BpctY.s:146    .text.gpio_led_init:00000000000000b0 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_Init
+HAL_GPIO_WritePin
